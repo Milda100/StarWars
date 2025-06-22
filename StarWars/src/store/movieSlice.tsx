@@ -4,12 +4,15 @@ export type Film = {
     title: string,
     episode_id: number,
     opening_crawl: string,
+    director: string;
+    producer: string;
+    release_date: string;
 };
 
 export const fetchMovies = createAsyncThunk<Film[]>(
     'movies/fetchMovies',
     async () => {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         const res = await fetch("https://swapi.info/api/films");
         const data: Film[] = await res.json();

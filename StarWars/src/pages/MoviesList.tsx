@@ -4,6 +4,7 @@ import type { RootState, AppDispatch } from '../store/store'
 import { fetchMovies } from '../store/movieSlice'
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { LoadingScreen, ErrorMessage } from '../components/FeedbackScreens';
 
 
 const MoviesList = () => {
@@ -14,26 +15,8 @@ const MoviesList = () => {
         dispatch(fetchMovies())
 }, [dispatch]);
 
-    if (loading) {
-    return (
-        <div
-        className="d-flex flex-column justify-content-center align-items-center"
-        style={{ height: '100vh' }}
-        >
-        <img
-            className="img-fluid"
-            srcSet="https://mir-s3-cdn-cf.behance.net/project_modules/disp/82fbbf68040289.5b4f2400147bc.gif 600w, https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/82fbbf68040289.5b4f2400147bc.gif 628w"
-            sizes="(max-width: 200px) 100vw, 628px"
-            alt="darth vader"
-            style={{ width: '150px', height: '150px' }}
-        />
-        <p className="mt-3">Loading movies...</p>
-        </div>
-    );
-    }
-
-
-    if (error) return <p>{error}</p>; //style error message
+    if (loading) return <LoadingScreen />;
+    if (error) return <ErrorMessage />; //style error message
 
     return (
         <>
@@ -53,7 +36,6 @@ const MoviesList = () => {
             ))}
         </div>
         </>
-
     );
 }
 

@@ -7,8 +7,6 @@ import store from './store/store.tsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/global.scss' // custom Sass
 
-console.log("main.tsx is running");
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
