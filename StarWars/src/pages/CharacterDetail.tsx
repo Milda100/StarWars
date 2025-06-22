@@ -1,14 +1,17 @@
-import { useEffect, useState} from 'react'
-import { Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState, AppDispatch } from "../store/store";
+import { fetchCharacters } from "../store/charactersSlice";
+import { useParams, Link } from "react-router-dom";
+import {LoadingScreen, ErrorMessage, NotFound,} from "../components/FeedbackScreens";
+import { Container } from "react-bootstrap";
+import { extractIdFromUrl } from '../utils/helper';
 
-type people = {
-    name: string,
-	height: number,
-	mass: number,
-	hair_color: string,
-	skin_color: string,
-	eye_color: string,
-	birth_year: string,
-	gender: string,
-}
+
+const CharacterDetail = () => {
+	const { id } = useParams<{ id: string }>();
+	const dispatch: AppDispatch = useDispatch();
+
+};
+
+export default CharacterDetail

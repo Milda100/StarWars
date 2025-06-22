@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export type People = {
+    id: string;
   name: string;
   height: string;
   mass: string;
@@ -9,6 +10,7 @@ export type People = {
   eye_color: string;
   birth_year: string;
   gender: string;
+  url: string;
 };
 
 

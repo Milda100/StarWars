@@ -2,11 +2,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export type Film = {
   title: string;
-  episode_id: string;
+  episode_id: number;
   opening_crawl: string;
   director: string;
   producer: string;
   release_date: string;
+  characters: [];
+  url: string;
 };
 
 export const fetchMovies = createAsyncThunk<Film[]>(
