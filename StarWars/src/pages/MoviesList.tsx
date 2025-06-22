@@ -1,42 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import type { RootState, AppDispatch } from '../store/store'
+import { fetchMovies } from '../store/movieSlice'
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
-// type Film = {
-//     title: string,
-//     episode_id: number,
-//     opening_crawl: string,
-// };
-
 const MoviesList = () => {
-    // const [movies, setMovies] = useState<Film[]>([]);
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState<string | null>(null);
-
+    const dispatch: AppDispatch = useDispatch();
+    const { movies, loading, error } = useSelector((state: RootState) => state.movies);
 
     useEffect(() => {
-    const fetchMovies = async () => {
-        try {
-            // setLoading(true);
-            // const res = await fetch("https://swapi.info/api/films");
-            // const data: Film[] = await res.json();
-            // console.log("Fetched data:", data);
-            
-            await new Promise((resolve) => setTimeout(resolve, 2000)); // Artificial delay of 2 seconds
-
-            setMovies(data);
-        } catch (err) {
-            setError('Ups... Something went wrong');
-        } finally {
-            // setLoading(false);
-        }
-    };
-
-    fetchMovies();
-}, []);
-
-    
+        dispatch(fetchMovies())
+}, [dispatch]);
 
     if (loading) {
     return (

@@ -1,4 +1,4 @@
-import { configureStore, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export type Film = {
     title: string,
