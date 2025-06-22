@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export type Film = {
-    title: string,
-    episode_id: number,
-    opening_crawl: string,
-    director: string;
-    producer: string;
-    release_date: string;
+  title: string;
+  episode_id: string;
+  opening_crawl: string;
+  director: string;
+  producer: string;
+  release_date: string;
 };
 
 export const fetchMovies = createAsyncThunk<Film[]>(
@@ -26,13 +26,13 @@ type MovieState = {
     error: string | null;
 };
 
-const initialState: MovieState ={
+const initialState: MovieState = {
     movies: [],
     loading: false,
     error: null,
 }
 
-const movieSlice = createSlice({
+const moviesSlice = createSlice({
     name: 'movies',
     initialState,
     reducers: {},
@@ -53,4 +53,4 @@ const movieSlice = createSlice({
     },
 });
 
-export default movieSlice.reducer;
+export default moviesSlice.reducer;
