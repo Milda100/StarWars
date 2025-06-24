@@ -13,27 +13,36 @@ export type People = {
   url: string;
 };
 
-
-export const fetchCharacters = createAsyncThunk<People[]>(
-    'characters/fetchCharacters',
-    async () => {
-        const res = await fetch("https://swapi.info/api/people");
-        const data: People[] = await res.json();
-        return data;
-    }
-);
-
 type CharacterState = {
     characters: People[];
     loading: boolean;
     error: string | null;
+    page: number;
+    hasMore: boolean;
 };
 
 const initialState: CharacterState = {
     characters: [],
     loading: false,
     error: null,
+    page: 1,
+    hasMore: true,
 }
+
+export const fetchCharacters = createAsyncThunk<{ characters: People[]; page: number }, number>(
+    'characters/fetchCharacters',
+    async (page: number) => {
+        const res = await fetch("https://swapi.info/api/people?page=${page}&limit=5");
+        if (!res.ok) {
+            throw new Error('Failed to fetch characters');
+        }
+        const data = await res.json();
+        return {
+            characters: data,
+            page,
+        }
+    }
+);
 
 const charactersSlice = createSlice({
     name: 'characters',
@@ -46,8 +55,10 @@ const charactersSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchCharacters.fulfilled, (state, action) => {
+                state.characters.push(...action.payload.characters);
+                state.page = action.payload.page;
+                state.hasMore = action.payload.characters.length > 0
                 state.loading = false;
-                state.characters = action.payload;
             })
             .addCase(fetchCharacters.rejected, (state) => {
                 state.loading = false;

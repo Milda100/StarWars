@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../store/store";
 import { fetchCharacters } from "../store/charactersSlice";
@@ -9,13 +9,36 @@ import { extractIdFromUrl } from "../utils/helper";
 
 const CharactersList = () => {
     const dispatch: AppDispatch = useDispatch();
-    const { characters, loading, error } = useSelector(
+    const { characters, page, hasMore, loading, error } = useSelector(
         (state: RootState) => state.characters
     );
 
+    const loaderRef = useRef<HTMLDivElement | null>(null);
+
     useEffect(() => {
-        dispatch(fetchCharacters());
-      }, [dispatch]);
+      if (page === 0 && characters.length === 0) {
+        dispatch(fetchCharacters(1));
+      }
+    }, [dispatch, characters.length, page]);
+
+    useEffect(() => {
+      if (!hasMore || loading) return;
+
+      const observer = new IntersectionObserver(
+        entries => {
+          if (entries[0].isIntersecting) {
+            dispatch(fetchCharacters(page + 1));
+          }
+        },
+        { threshold: 1.0 }
+      );
+
+    const current = loaderRef.current;
+      if (current) observer.observe(current);
+
+      return () =>  observer.disconnect();
+
+    }, [dispatch, page, hasMore, loading]);
 
     if (loading) return <LoadingScreen />;
     if (error) return <ErrorMessage />;
@@ -41,6 +64,7 @@ const CharactersList = () => {
             </div>
           );
         })}
+        {hasMore && <div ref={loaderRef} style={{ height: '1px' }} />}
       </div>
     </>
   );
