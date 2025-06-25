@@ -10,6 +10,7 @@
 	  birth_year: string;
 	  gender: string;
 	  url: string;
+
 	};
 	type CharacterState = {
 	    characters: People[];

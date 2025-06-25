@@ -18,11 +18,11 @@ export const LoadingScreen = ({ message = "Loading movies..." }: MessageProps) =
         </div>
 );
 
-export const ErrorMessage = ({ message }: MessageProps) => (
+export const ErrorMessage = ({ message = "Error" }: MessageProps) => (
   <p className="text-danger text-align-center">{message}</p>
 );
 
-export const NotFound = ({ message }: MessageProps) => (
+export const NotFound = ({ message = "Not Found" }: MessageProps) => (
   <p className="text-muted text-align-center">{message}</p>
 );
 

@@ -6,6 +6,7 @@ import { useParams, Link } from "react-router-dom";
 import {LoadingScreen, ErrorMessage, NotFound,} from "../components/FeedbackScreens";
 import { Container } from "react-bootstrap";
 import { extractIdFromUrl } from '../utils/helper';
+import { ROUTES } from "../routes/routes";
 
 const MovieDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -78,7 +79,7 @@ const MovieDetail = () => {
           <ul className="list-unstyled">
                     {movieCharacters.map((character) => (
                     <li key={character.url}>
-                        <Link to={`/character/${extractIdFromUrl(character.url)}`} style={{ textDecoration: "none" }}>{character.name}</Link>
+                        <Link to={ROUTES.characterDetail(extractIdFromUrl(character.url))} style={{ textDecoration: "none" }}>{character.name}</Link>
                     </li>
                     ))}
                 </ul>
