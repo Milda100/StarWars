@@ -9,7 +9,6 @@ import { extractIdFromUrl } from "../utils/helper";
 import { ROUTES } from "../routes/routes";
 import type { People } from "../store/charactersSlice";
 
-
 interface CharacterType {
   name: string;
   url: string;
@@ -22,15 +21,15 @@ interface Props {
 
 const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
   const dispatch: AppDispatch = useDispatch();
-  const { searchResults, loading, error } = useSelector((state: RootState) => state.search);
+  const { searchResults, loading, error } = useSelector(
+    (state: RootState) => state.search
+  );
 
   const [query, setQuery] = useState("");
   const [highlightIndex, setHighlightIndex] = useState<number>(-1);
 
-  const navigate = useNavigate();
 
   const debouncedQuery = useDebouncedValue(query, 1000); // 1s debounce
-
 
   // Trigger search when debounced value changes
   useEffect(() => {

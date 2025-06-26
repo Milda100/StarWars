@@ -3,14 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../store/store";
 import { fetchCharacters } from "../store/charactersSlice";
 import { useParams, Link } from "react-router-dom";
-import { LoadingScreen, ErrorMessage, NotFound } from "../components/FeedbackScreens";
-import { Container, Table } from "react-bootstrap";
+import {LoadingScreen, ErrorMessage, NotFound,} from "../components/FeedbackScreens";
+import { Container } from "react-bootstrap";
 import { extractIdFromUrl } from "../utils/helper";
 import { fetchCharacterById } from "../store/characterDetailSlice";
+import { ROUTES } from "../routes/routes";
 
 // Define movie type explicitly
 type Movie = {
   title: string;
+  id: string;
   url: string;
 };
 
@@ -37,14 +39,16 @@ const CharacterDetail = () => {
   const characterId = characters.find((c) => extractIdFromUrl(c.url) === id);
 
   // Fallback: fetch single character and store it in Redux
-  const characterDetail = useSelector((state: RootState) => state.characterDetail.character); // or use selector
-  const character= characterId || characterDetail;
+  const characterDetail = useSelector(
+    (state: RootState) => state.characterDetail.character
+  ); // or use selector
+  const character = characterId || characterDetail;
 
   useEffect(() => {
-    if (!character && id) {
+    if (id) {
       dispatch(fetchCharacterById(id));
     }
-  }, [dispatch, character, id]);
+  }, [dispatch, id]);
 
   // Fetch related movies
   useEffect(() => {
@@ -78,38 +82,55 @@ const CharacterDetail = () => {
   }, [character]);
 
   if (loading || charMovieLoading) return <LoadingScreen />;
-  if (error || charMovieError) return <ErrorMessage />;
+  if (error || charMovieError) return <ErrorMessage message="Not found" />;
   if (!character) return <NotFound message="Character not found" />;
 
   return (
-    <Container className="my-4">
+    <Container className="text-center">
       <h1 className="mb-4">{character.name}</h1>
-
-      <Table striped bordered hover>
-        <tbody>
-          <tr><td><strong>Height</strong></td><td>{character.height} cm</td></tr>
-          <tr><td><strong>Mass</strong></td><td>{character.mass} kg</td></tr>
-          <tr><td><strong>Hair Color</strong></td><td>{character.hair_color}</td></tr>
-          <tr><td><strong>Skin Color</strong></td><td>{character.skin_color}</td></tr>
-          <tr><td><strong>Eye Color</strong></td><td>{character.eye_color}</td></tr>
-          <tr><td><strong>Birth Year</strong></td><td>{character.birth_year}</td></tr>
-          <tr><td><strong>Gender</strong></td><td>{character.gender}</td></tr>
-        </tbody>
-      </Table>
+      <p>
+        <strong>Height: </strong>
+        {character.height} cm
+      </p>
+      <p>
+        <strong>Mass: </strong>
+        {character.mass} kg
+      </p>
+      <p>
+        <strong>Hair Color: </strong>
+        {character.hair_color}
+      </p>
+      <p>
+        <strong>Skin Color: </strong>
+        {character.skin_color}
+      </p>
+      <p>
+        <strong>Eye Color: </strong>
+        {character.eye_color}
+      </p>
+      <p>
+        <strong>Birth Year: </strong>
+        {character.birth_year}
+      </p>
+      <p>
+        <strong>Gender: </strong>
+        {character.gender}
+      </p>
 
       <div className="mt-4">
         <h4>Related Movies</h4>
         {charMovies.length === 0 ? (
           <p>No related movies found.</p>
         ) : (
-          <ul>
-            {charMovies.map((movie) => (
-              <li key={movie.url}>
-                <Link to={`/movies/${extractIdFromUrl(movie.url)}`}>
+          <ul className="list-unstyled">
+            {charMovies.map((movie) => {
+              return (
+              <li key={extractIdFromUrl(movie.url)}>
+                <Link to={ROUTES.movieDetail(extractIdFromUrl(movie.url))} style={{ textDecoration: "none" }}>
                   {movie.title}
                 </Link>
               </li>
-            ))}
+            )})}
           </ul>
         )}
       </div>

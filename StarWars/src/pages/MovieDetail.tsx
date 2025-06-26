@@ -28,26 +28,26 @@ const MovieDetail = () => {
     }
   }, [dispatch, movies.length]);
 
-  const movie = movies.find((m) => m.episode_id === Number(id));
+  const movie = movies.find((m) => extractIdFromUrl(m.url) === id); 
 
   //movies characters
   useEffect(() => {
-    if (!movie) return;
+    // if (!movie) return;
 
-    const fetchCharacters = async () => {
+    const fetchMovieCharacters = async () => {
       try {
         setCharLoading(true);
         const responses = await Promise.all(movie.characters.map((url) => fetch(url)));
         const data = await Promise.all(responses.map((res) => res.json()));
         setMovieCharacters(data);
       } catch (error) {
-        setCharError("Failed to load characters.");
+        setCharError("Failed to load movie characters.");
       } finally {
         setCharLoading(false);
       }
     };
 
-    fetchCharacters();
+    fetchMovieCharacters();
   }, [movie]);
 
   if (moviesLoading || charLoading) return <LoadingScreen />;
@@ -59,7 +59,7 @@ const MovieDetail = () => {
       <Container className="text-center">
         <h1 className="m-4">{movie.title}</h1>
         <p>
-          <strong>Episode:</strong> {movie.episode_id}
+          <strong>Movie ID:</strong> {movie.episode_id}
         </p>
         <p>
           <strong>Opening Crawl:</strong>
@@ -77,11 +77,16 @@ const MovieDetail = () => {
         <div className="mt-4">
           <h4>Characters</h4>
           <ul className="list-unstyled">
-                    {movieCharacters.map((character) => (
-                    <li key={character.url}>
-                        <Link to={ROUTES.characterDetail(extractIdFromUrl(character.url))} style={{ textDecoration: "none" }}>{character.name}</Link>
-                    </li>
-                    ))}
+                    {movieCharacters.map((character) => {
+                      console.log("Character URL:", character.url); // 👈 this will log each character's URL
+                      return (
+                        <li key={character.url}>
+                          <Link to={ROUTES.characterDetail(extractIdFromUrl(character.url))} style={{ textDecoration: "none" }}>
+                            {character.name}
+                          </Link>
+                        </li>
+                      );
+                    })}
                 </ul>
         </div>
       </Container>

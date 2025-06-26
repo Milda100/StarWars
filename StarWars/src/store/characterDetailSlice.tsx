@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { People } from './charactersSlice';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { People } from "./charactersSlice";
 
 interface CharacterDetailState {
   character: People | null;
@@ -15,12 +15,12 @@ const initialState: CharacterDetailState = {
 
 // Async thunk to fetch character details by ID
 export const fetchCharacterById = createAsyncThunk(
-  'characterDetail/fetchCharacterById',
+  "characterDetail/fetchCharacterById",
   async (id: string, thunkAPI) => {
     try {
       const response = await fetch(`https://swapi.py4e.com/api/people/${id}/`);
       if (!response.ok) {
-        throw new Error('Character not found');
+        throw new Error("Character not found");
       }
       const data = await response.json();
       return {
@@ -34,7 +34,7 @@ export const fetchCharacterById = createAsyncThunk(
 );
 
 const characterDetailSlice = createSlice({
-  name: 'characterDetail',
+  name: "characterDetail",
   initialState,
   reducers: {
     clearCharacter: (state) => {

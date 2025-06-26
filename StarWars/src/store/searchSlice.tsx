@@ -1,10 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-type People = {
-    id: string;
-	  name: string;
-	  url: string;
-};
+import type { People } from "./charactersSlice";
 
 type SearchState = {
   searchResults: People[];

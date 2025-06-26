@@ -14,7 +14,7 @@ export type Film = {
 export const fetchMovies = createAsyncThunk<Film[]>(
     'movies/fetchMovies',
     async () => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 5000));
 
         const res = await fetch("https://swapi.info/api/films");
         const data: Film[] = await res.json();

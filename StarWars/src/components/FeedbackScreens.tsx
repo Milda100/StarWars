@@ -2,7 +2,7 @@ type MessageProps = {
   message?: string;
 };
 
-export const LoadingScreen = ({ message = "Loading movies..." }: MessageProps) => (
+export const LoadingScreen = ({ message = "Loading..." }: MessageProps) => (
     <div
         className="d-flex flex-column justify-content-center align-items-center"
         style={{ height: '100vh' }}
@@ -19,8 +19,11 @@ export const LoadingScreen = ({ message = "Loading movies..." }: MessageProps) =
 );
 
 export const ErrorMessage = ({ message = "Error" }: MessageProps) => (
-  <p className="text-danger text-align-center">{message}</p>
+  <div className="d-flex justify-content-center align-items-center vh-100">
+    <h1 className="text-danger text-center fw-bold ">{message}</h1>
+  </div>
 );
+
 
 export const NotFound = ({ message = "Not Found" }: MessageProps) => (
   <p className="text-muted text-align-center">{message}</p>
