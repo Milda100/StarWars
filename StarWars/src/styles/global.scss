@@ -1,4 +1,3 @@
-// @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Saira+Extra+Condensed:500');
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
 @font-face {
   font-family: 'StarJedi';
@@ -6,16 +5,8 @@
   font-weight: normal;
   font-style: normal;
 }
-//variables
-//colors
-$bg-color: #0d0d0d, ; //#3d3d3d;
-$text-color: #e0e0e0;
-$accent-color: #ffe81f; // Star Wars yellow
-$card-bg: #1a1a1a;
-$border-color: #333;
-//fonts
-$font-main: 'Exo 2', sans-serif;
-$font-display: 'StarJedi', sans-serif;
+@import './_searchableDropdown.scss';
+@import './_variables.scss';
 
 
 // Global styles
@@ -79,3 +70,5 @@ button {
     box-shadow: 0 0 10px $accent-color;
   }
 }
+
+

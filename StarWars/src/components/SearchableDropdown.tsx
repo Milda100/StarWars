@@ -1,25 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../store/store";
 import { fetchSearchCharacters, clearResults } from "../store/searchSlice";
 import { useDebouncedValue } from "../hooks/useDebouncedValue";
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { extractIdFromUrl } from "../utils/helper";
-import { ROUTES } from "../routes/routes";
 import type { People } from "../store/charactersSlice";
 
-interface CharacterType {
-  name: string;
-  url: string;
-  // any other fields you fetch
-}
 
 interface Props {
   onSelect: (result: People) => void;
 }
 
 const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const dispatch: AppDispatch = useDispatch();
   const { searchResults, loading, error } = useSelector(
     (state: RootState) => state.search
@@ -28,7 +21,7 @@ const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
   const [query, setQuery] = useState("");
   const [highlightIndex, setHighlightIndex] = useState<number>(-1);
 
-
+  
   const debouncedQuery = useDebouncedValue(query, 1000); // 1s debounce
 
   // Trigger search when debounced value changes
@@ -41,7 +34,7 @@ const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
   }, [debouncedQuery, dispatch]);
 
   // onSelect handler passes full character, not just name
-  const handleSelect = (result: CharacterType) => {
+  const handleSelect = (result: People) => {
     onSelect(result);
     setQuery("");
     setHighlightIndex(-1);
@@ -62,15 +55,40 @@ const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
     } else if (e.key === "Enter" && highlightIndex >= 0) {
       e.preventDefault();
       handleSelect(searchResults[highlightIndex]);
+    } else if (e.key === "Escape") {
+      setQuery("");
+      setHighlightIndex(-1);
+      dispatch(clearResults());
+      (e.target as HTMLInputElement).blur();
     }
   };
 
+    useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setQuery("");
+        setHighlightIndex(-1);
+        dispatch(clearResults());
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dispatch]);
+
   return (
     <div
-      style={{ position: "relative", width: "300px" }}
+      ref={dropdownRef}
+      className="search-dropdown"
       role="combobox"
       aria-haspopup="listbox"
-      aria-expanded={searchResults.length > 0}
+      aria-expanded={searchResults.length > 0 && !error}
     >
       <input
         type="text"
@@ -88,54 +106,33 @@ const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
         onKeyDown={handleKeyDown}
         aria-controls="search-dropdown"
         aria-autocomplete="list"
-        style={{ width: "100%", padding: "8px" }}
       />
-      {loading && <div>Loading...</div>}
 
-      {!loading && query && searchResults.length === 0 && (
-        <div
-          style={{
-            position: "absolute",
-            backgroundColor: "white",
-            padding: "8px",
-            border: "1px solid #ccc",
-            width: "100%",
-            zIndex: 1000,
-          }}
-        >
-          No results found
+      {/* Loading */}
+      {loading && <div className="loading">Loading...</div>}
+
+      {/* Error (non-blocking) */}
+      {!loading && error && (
+        <div className="dropdown-error" role="alert" aria-live="assertive">
+          {error}
         </div>
       )}
 
-      {searchResults.length > 0 && (
-        <ul
-          id="search-dropdown"
-          role="listbox"
-          style={{
-            position: "absolute",
-            width: "100%",
-            margin: 0,
-            padding: 0,
-            listStyle: "none",
-            border: "1px solid #ccc",
-            backgroundColor: "white",
-            maxHeight: "200px",
-            overflowY: "auto",
-            zIndex: 1000,
-          }}
-        >
+      {/* No results */}
+      {!loading && query && searchResults.length === 0 && !error && (
+        <div className="no-results">No results found</div>
+      )}
+
+      {/* Results */}
+      {!loading && !error && searchResults.length > 0 && (
+        <ul id="search-dropdown" role="listbox">
           {searchResults.map((result, idx) => (
             <li
               key={result.url}
               role="option"
               aria-selected={highlightIndex === idx}
               onClick={() => handleSelect(result)}
-              style={{
-                padding: "8px",
-                cursor: "pointer",
-                borderBottom: "1px solid #eee",
-                backgroundColor: highlightIndex === idx ? "#f0f0f0" : "white",
-              }}
+              tabIndex={0}
             >
               {result.name}
             </li>
@@ -144,6 +141,6 @@ const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
       )}
     </div>
   );
-};
+}
 
 export default SearchableDropdown;
