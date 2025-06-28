@@ -6,27 +6,27 @@ type Props = {
   externalRef?: React.RefObject<HTMLAudioElement | null>;
 };
 
+
 const ThemeAudio = ({ externalRef }: Props) => {
-  const internalRef = useRef<HTMLAudioElement | null>(null);
+  const internalRef = useRef<HTMLAudioElement>(null);
   const audioRef = externalRef || internalRef;
 
   const [isMuted, setIsMuted] = useState(true);
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (audio) {
+    if (audio && !audio.muted) {
       audio.muted = true;
       setIsMuted(true);
     }
-  }, []);
+  }, [audioRef]);
 
   const toggleMute = () => {
     const audio = audioRef.current;
-    if (audio) {
-      const newMutedState = !audio.muted;
-      audio.muted = newMutedState;
-      setIsMuted(newMutedState);
-    }
+    if (!audio) return;
+    const newMutedState = !audio.muted;
+    audio.muted = newMutedState;
+    setIsMuted(newMutedState);
   };
 
   return (
