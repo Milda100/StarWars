@@ -1,0 +1,103 @@
+// SearchableDropdown styles
+@import "../styles/_variables.scss";
+
+.search-dropdown {
+  position: relative;
+  width: 300px;
+  font-family: $font-main;
+
+  input {
+    width: 100%;
+    padding: 8px;
+    background-color: $card-bg;
+    color: $text-color;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 6px $accent-color;
+      border-color: $accent-color;
+    }
+
+    &::placeholder {
+      color: lighten($text-color, 30%);
+    }
+  }
+
+  .loading,
+  .no-results {
+    position: absolute;
+    background-color: $card-bg;
+    color: $text-color;
+    padding: 8px;
+    border: 1px solid $border-color;
+    width: 100%;
+    z-index: 1000;
+    border-radius: 0 0 4px 4px;
+  }
+  
+    .dropdown-error {
+    position: absolute;
+    background-color: #1c0000;
+    color: #ff6b6b;
+    padding: 8px;
+    border: 1px solid darkred;
+    width: 100%;
+    z-index: 1000;
+    font-weight: bold;
+    font-family: $font-main;
+    border-radius: 0 0 6px 6px;
+    text-align: center;
+    animation: pulseError 0.5s ease-in-out;
+
+    @keyframes pulseError {
+      0% {
+        box-shadow: 0 0 0 red;
+      }
+      100% {
+        box-shadow: 0 0 10px red;
+      }
+    }
+  }
+
+  ul {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid $border-color;
+    background-color: $card-bg;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    border-radius: 0 0 6px 6px;
+  }
+
+  li {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid $border-color;
+    color: $text-color;
+
+    &:hover,
+    &[aria-selected="true"] {
+      background-color: darken($card-bg, 5%);
+      color: $accent-color;
+      text-shadow: 0 0 6px $accent-color;
+    }
+
+    &:focus {
+      outline: 2px solid $accent-color;
+      background-color: darken($card-bg, 10%);
+      color: $accent-color;
+      text-shadow: none; /* avoid blurry text shadows on focus */
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

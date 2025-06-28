@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { Volume2, VolumeX } from "lucide-react";
 
 type Props = {
-  externalRef?: React.RefObject<HTMLAudioElement | null>;
+  externalRef?: React.RefObject<HTMLAudioElement>;
 };
 
 const ThemeAudio = ({ externalRef }: Props) => {
