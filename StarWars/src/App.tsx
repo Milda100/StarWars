@@ -1,4 +1,3 @@
-import './styles/global.scss'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import MoviesList from './pages/MoviesList'
 import MovieDetail from './pages/MovieDetail'

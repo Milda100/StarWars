@@ -122,11 +122,11 @@ const CharacterDetail = () => {
         {charMovies.length === 0 ? (
           <p>No related movies found.</p>
         ) : (
-          <ul className="list-unstyled">
+          <ul className="list-unstyled link-list">
             {charMovies.map((movie) => {
               return (
               <li key={extractIdFromUrl(movie.url)}>
-                <Link to={ROUTES.movieDetail(extractIdFromUrl(movie.url))} style={{ textDecoration: "none" }}>
+                <Link to={ROUTES.movieDetail(extractIdFromUrl(movie.url))}>
                   {movie.title}
                 </Link>
               </li>

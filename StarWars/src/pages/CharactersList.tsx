@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../store/store";
 import { fetchCharacters } from "../store/charactersSlice";
-import { Card, CardTitle, Row } from "react-bootstrap";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Card, CardTitle, Col, Container, Row } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { LoadingScreen, ErrorMessage } from "../components/FeedbackScreens";
 import { extractIdFromUrl } from "../utils/helper";
 import SearchableDropdown from "../components/SearchableDropdown";
 import { ROUTES } from "../routes/routes";
-import { fetchCharacterById } from "../store/characterDetailSlice";
+
 
 const CharactersList = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -52,28 +52,32 @@ const CharactersList = () => {
 
   return (
     <>
-      <h1 className="text-center m-4">Star Wars Characters</h1>
-      <SearchableDropdown onSelect={handleCharacterSelect} />
-      <Row>
+    <Row className="m-2">
+      <Col xs="auto">
+        <Link to={ROUTES.movies}><button>Movies</button></Link>
+      </Col>
+      <Col xs="auto">
+        <SearchableDropdown onSelect={handleCharacterSelect} />
+      </Col>
+    </Row>
+      <h1 className="mt-3 mb-5">Star Wars Characters</h1>
+      <Col>
         {characters.map((character) => {
           const characterId = extractIdFromUrl(character.url);
           return (
-            <div key={character.url} className="mb-4">
-              <Link
-                to={ROUTES.characterDetail(characterId)}
-                style={{ textDecoration: "none" }}
-              >
+            <Container key={character.url} className="mb-4" style={{ width: "100%", maxWidth: "400px" }}>
+              <Link to={ROUTES.characterDetail(characterId)} style={{ textDecoration: "none" }}>
                 <Card aria-label={`Star Wars character: ${character.name}`}>
-                  <Card.Body className="d-flex flex-column text-center">
+                  <Card.Body>
                     <CardTitle>{character.name}</CardTitle>
                   </Card.Body>
                 </Card>
               </Link>
-            </div>
+            </Container>
           );
         })}
         {hasMore && <div ref={loaderRef} style={{ height: "1px" }} />}
-      </Row>
+      </Col>
     </>
   );
 };

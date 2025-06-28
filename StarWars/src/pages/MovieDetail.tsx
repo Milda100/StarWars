@@ -32,7 +32,11 @@ const MovieDetail = () => {
 
   //movies characters
   useEffect(() => {
-    // if (!movie) return;
+    if (!movie) {
+      setMovieCharacters([]);
+      setCharLoading(false);
+      return;
+    }
 
     const fetchMovieCharacters = async () => {
       try {
@@ -55,7 +59,6 @@ const MovieDetail = () => {
   if (!movie) return <NotFound message="Movie not found" />;
 
   return (
-    <>
       <Container className="text-center">
         <h1 className="m-4">{movie.title}</h1>
         <p>
@@ -76,12 +79,11 @@ const MovieDetail = () => {
         </p>
         <div className="mt-4">
           <h4>Characters</h4>
-          <ul className="list-unstyled">
+          <ul className="list-unstyled link-list">
                     {movieCharacters.map((character) => {
-                      console.log("Character URL:", character.url); // 👈 this will log each character's URL
                       return (
                         <li key={character.url}>
-                          <Link to={ROUTES.characterDetail(extractIdFromUrl(character.url))} style={{ textDecoration: "none" }}>
+                          <Link to={ROUTES.characterDetail(extractIdFromUrl(character.url))}>
                             {character.name}
                           </Link>
                         </li>
@@ -90,7 +92,6 @@ const MovieDetail = () => {
                 </ul>
         </div>
       </Container>
-    </>
   );
 };
 
