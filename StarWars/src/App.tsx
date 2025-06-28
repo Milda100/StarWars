@@ -3,11 +3,12 @@ import MoviesList from './pages/MoviesList'
 import MovieDetail from './pages/MovieDetail'
 import CharactersList from './pages/CharactersList'
 import CharacterDetail from './pages/CharacterDetail'
+import ThemeAudioPlayer from './components/ThemeAudio'
 
 function App() {
-  console.log("App component is rendering"); 
   return (
     <>
+    <ThemeAudioPlayer />
     <Routes>
       <Route path="/" element={<Navigate to="/movies" replace />} />
       <Route path="/movies" element={<MoviesList />} />
