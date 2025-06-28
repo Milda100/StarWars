@@ -54,7 +54,7 @@ const CharactersList = () => {
     <>
     <Row className="m-2">
       <Col xs="auto">
-        <Link to={ROUTES.movies}><button>Movies</button></Link>
+        <button onClick={() => navigate(ROUTES.movies)}>Movies</button>
       </Col>
       <Col xs="auto">
         <SearchableDropdown onSelect={handleCharacterSelect} />
@@ -67,7 +67,7 @@ const CharactersList = () => {
           return (
             <Container key={character.url} className="mb-4" style={{ width: "100%", maxWidth: "400px" }}>
               <Link to={ROUTES.characterDetail(characterId)} style={{ textDecoration: "none" }}>
-                <Card aria-label={`Star Wars character: ${character.name}`}>
+                <Card  aria-label={`Star Wars character: ${character.name}`}>
                   <Card.Body>
                     <CardTitle>{character.name}</CardTitle>
                   </Card.Body>

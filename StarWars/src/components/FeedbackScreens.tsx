@@ -15,20 +15,20 @@ export const LoadingScreen = ({ message = "Loading..." }: MessageProps) => (
             alt="darth vader"
             style={{ width: '150px', height: '150px' }}
         />
-        <p className="mt-3">{message}</p>
+        <p className="mt-3 feedback-loading">{message}</p>
         </div>
 );
 
 export const ErrorMessage = ({ message = "Error" }: MessageProps) => (
   <div className="d-flex justify-content-center align-items-center vh-100">
-    <h1 className="text-danger text-center fw-bold ">{message}</h1>
+    <h1 className="text-center feedback-error">{message}</h1>
   </div>
 );
 
 
 export const NotFound = ({ message = "Not Found" }: MessageProps) => (
   <div className="d-flex justify-content-center align-items-center vh-100">
-    <h1 className="text-center fw-bold">{message}</h1>
+    <h1 className="text-center feedback-notfound">{message}</h1>
   </div>
 );
 
