@@ -3,12 +3,12 @@ import MoviesList from './pages/MoviesList'
 import MovieDetail from './pages/MovieDetail'
 import CharactersList from './pages/CharactersList'
 import CharacterDetail from './pages/CharacterDetail'
-import ThemeAudioPlayer from './components/ThemeAudio'
+import IntroWrapper from './components/IntroWrapper'
 
 function App() {
   return (
     <>
-    <ThemeAudioPlayer />
+    <IntroWrapper>
     <Routes>
       <Route path="/" element={<Navigate to="/movies" replace />} />
       <Route path="/movies" element={<MoviesList />} />
@@ -16,6 +16,7 @@ function App() {
       <Route path="/characters" element={<CharactersList/>} />
       <Route path="/characters/:id/" element={<CharacterDetail/>} />
     </Routes>
+    </IntroWrapper>
     </>
   )
 }
