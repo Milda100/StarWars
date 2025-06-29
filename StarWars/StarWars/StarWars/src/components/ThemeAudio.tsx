@@ -3,29 +3,30 @@ import { Button } from "react-bootstrap";
 import { Volume2, VolumeX } from "lucide-react";
 
 type Props = {
-  externalRef?: React.RefObject<HTMLAudioElement | null>;
+  externalRef?: React.RefObject<HTMLAudioElement>;
 };
 
 const ThemeAudio = ({ externalRef }: Props) => {
-  const internalRef = useRef<HTMLAudioElement>(null);
+  const internalRef = useRef<HTMLAudioElement | null>(null);
   const audioRef = externalRef || internalRef;
 
   const [isMuted, setIsMuted] = useState(true);
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (audio && !audio.muted) {
+    if (audio) {
       audio.muted = true;
       setIsMuted(true);
     }
-  }, [audioRef]);
+  }, []);
 
   const toggleMute = () => {
     const audio = audioRef.current;
-    if (!audio) return;
-    const newMutedState = !audio.muted;
-    audio.muted = newMutedState;
-    setIsMuted(newMutedState);
+    if (audio) {
+      const newMutedState = !audio.muted;
+      audio.muted = newMutedState;
+      setIsMuted(newMutedState);
+    }
   };
 
   return (
