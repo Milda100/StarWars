@@ -6,7 +6,6 @@ type Props = {
   externalRef?: React.RefObject<HTMLAudioElement | null>;
 };
 
-
 const ThemeAudio = ({ externalRef }: Props) => {
   const internalRef = useRef<HTMLAudioElement>(null);
   const audioRef = externalRef || internalRef;

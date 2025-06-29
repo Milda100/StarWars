@@ -91,8 +91,6 @@ const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
       aria-expanded={searchResults.length > 0 && !error}
     >
       <input
-        type="text"
-        aria-label="Character search input"
         value={query}
         placeholder="Search characters..."
         onChange={(e) => {
@@ -104,8 +102,14 @@ const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
           }
         }}
         onKeyDown={handleKeyDown}
+        type="text"
+        aria-label="Character search input"
+        role="combobox"
         aria-controls="search-dropdown"
         aria-autocomplete="list"
+        aria-activedescendant={
+          highlightIndex !== -1 ? `search-result-${highlightIndex}` : undefined
+        }
       />
 
       {/* Loading */}
@@ -129,6 +133,7 @@ const SearchableDropdown: React.FC<Props> = ({ onSelect }) => {
           {searchResults.map((result, idx) => (
             <li
               key={result.url}
+              id={`search-result-${idx}`}
               role="option"
               aria-selected={highlightIndex === idx}
               onClick={() => handleSelect(result)}

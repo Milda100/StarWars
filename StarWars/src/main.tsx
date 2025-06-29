@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store/store.tsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './styles/global.scss' // custom Sass
+import './styles/global.scss'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
